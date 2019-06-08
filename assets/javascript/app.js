@@ -1,81 +1,130 @@
-// start button to begin game
+// start button to begin game sets everything up
 
 // use setInterval to time questions
 
 // use clearInterval to move to next question
 
-// if (user answers correctly) {
-//     show "correct!" msg and go to next question
-// } else if (user answers incorrectly) {
-//     show the correct answer and go to next question
-// } else {
-//     wait until timer runs out then go to next question
+// for (let i = 0; i < trivia.length; i++) {
+//  if (user answers correctly) {
+//      show "correct!" msg and go to next question
+//  } else if (user answers incorrectly) {
+//      show the correct answer and go to next question
+//  } else {
+//      wait until timer runs out then go to next question
+//  }
 // }
 
 // display at end of game:
 // wins, losses and unanswered
 // show button to play again which resets game to new round
 
-// use timer like stopwatch activity
-// store questions in array or object
-
-
-
-// ----- QUESTIONS -----
-// how to get next question? iterate through object?
-
 
 
 // ----- GLOBAL VARIABLES -----
 
+const trivia = [
+    {
+        question: "Who directed 2001: A Space Odyssey?",
+        answer: ["Steven Spielberg", "Andrei Tarkovsky", "Stanley Kubrick", "George Lucas"],
+        right: "Stanley Kubrick"
+    },
+    {
+        question: "What is the destination of the spacecraft Discovery One?",
+        answer: ["Mars", "Jupiter", "Alpha Centauri", "Tatooine"],
+        right: "Jupiter"
+    },
+    {
+        question: "What mysterious phenomenon recurs throughout the film?",
+        answer: ["crop circles", "a UFO sighting", "the Borg", "a black monolith appears"],
+        right: "a black monolith appears"
+    },
+    {
+        question: "What is the name of the computer controlling the ship?",
+        answer: ["Alex", "R2D2", "HAL 9000", "Jethro"],
+        right: "HAL 9000"
+    },
+    {
+        question: "When HAL first defies Dave, what command does he refuse to obey?",
+        answer: ["Make me a grilled cheese, HAL.", "Open the pod bay doors, HAL.", "OK, HAL, how many lightyears to Jupiter?", "HAL, play NPR One."],
+        right: "Open the pod bay doors, HAL."
+    },
+];
+
 let right = 0;
 let wrong = 0;
 let unaswered = 0;
+let question = 0;
 
-let timerRunning = false;
-let time = 0;
-let question = 1;
+// these control when the intervals fire
+let qInt = true;
+let qTimer = 31;
+let aInt = true;
+let aTimer = 5;
 
-const trivia = {
-    q1: "Who directed 2001: A Space Odyssey?",
-    q2: "In what year was the film made?",
-    q3: "What is the destination of the spacecraft Discovery One?",
-    q4: "What mysterious object appears throughout the film?",
-    q5: "What is the name of the computer controlling the ship?",
-    q6: "When HAL first openly defies Dave, what command does he refuse to obey?"
-}
 
-const answers = {
-    q1: ["Steven Spielberg", "Andrei Tarkovsky", "Stanley Kubrick", "George Lucas"],
-    q2: ["2001", "1988", "1978", "1968"],
-    q3: ["Mars", "Jupiter", "Europa", "Tatooine"],
-    q4: ["a crop circle", "the Death Star", "Andrei Tarkovsky", "a black monolith"],
-    q5: ["C3PO", "HAL 2001", "HAL 9000", "Jethro"],
-    q6: ["Make me a grilled cheese, HAL.", "Open the pod bay doors, HAL.", "OK, HAL, how many lightyears to Jupiter?", "HAL, play NPR One."]
-}
 
 // ----- FUNCTIONS -----
 
-// press button to start timer and show first question
-startGame() {
+// Katie's advice to simplify: set one function for timers and pass each timer as a parameter
+// but will this work since I want one timer to .text and the other to be hidden?
 
+// set a 30 sec. countdown for answering question
+function questionTimer() {
+    qInt = setInterval(qCountDown, 1000);
+}
+
+function qCountDown() {
+    qTimer--;
+    if (qTimer === 0) {
+        clearInterval(qInt)
+    } else {
+        $("#timer").text(qTimer)
+    }
+}
+
+// set a 5 sec. countdown for showing the correct answer
+function answerTimer() {
+    qInt = setInterval(aCountDown, 1000);
+}
+
+function aCountDown() {
+    aTimer--;
+    if (aTimer === 0) {
+        clearInterval(aInt)
+    } else {
+        $("#timer").text(aTimer)
+    }
+}
+
+// builds and displays question
+function showQuestion(object) {
+    $("#trivia-q-and-a").html($("<p>").text(object[0].question));
+    for (let j = 0; j < object[0].answer.length; j++) {
+        $("#trivia-q-and-a").append($("<p>").text(object[0].answer[j]));
+    }
+}
+
+// right answer: show "correct!" msg, answerTimer(), reset()
+function rightAnswer() {
+
+}
+
+// wrong answer: show right answer, answerTimer(), reset()
+function wrongAnswer() {
+
+}
+
+// start game
+function startGame() {
+    $("#start-btn").remove();
+    questionTimer();
+    showQuestion(trivia);
 }
 
 // reset timer and show next question
-reset() {
+function reset() {
 
 }
-
-// right answer: show "correct!" msg, wait, reset()
-rightAnswer() {
-
-}
-
-// wrong answer: show right answer, wait, reset()
-wrongAnswer() {
-
-}
-
 
 
 
@@ -83,6 +132,7 @@ wrongAnswer() {
 
 $( document ).ready(function() {
 
+    $("#start-btn").on("click", startGame);
 
 
 })
