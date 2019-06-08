@@ -5,9 +5,9 @@
 // use clearInterval to move to next question
 
 // for (let i = 0; i < trivia.length; i++) {
-//  if (user answers correctly) {
+//  if (answerChoice === trivia[i].right) {
 //      show "correct!" msg and go to next question
-//  } else if (user answers incorrectly) {
+//  } else if (answerChoice !== trivia[i].right) {
 //      show the correct answer and go to next question
 //  } else {
 //      wait until timer runs out then go to next question
@@ -52,14 +52,18 @@ const trivia = [
 
 let right = 0;
 let wrong = 0;
-let unaswered = 0;
+let unanswered = 0;
 let question = 0;
+let answerChoice = "";
 
 // these control when the intervals fire
 let qInt = true;
-let qTimer = 31;
+let qTimer = 21;
 let aInt = true;
 let aTimer = 5;
+
+// use this to move through trivia array when changing questions
+let tIndex = 0;
 
 
 
@@ -97,33 +101,50 @@ function aCountDown() {
 }
 
 // builds and displays question
-function showQuestion(object) {
-    $("#trivia-q-and-a").html($("<p>").text(object[0].question));
-    for (let j = 0; j < object[0].answer.length; j++) {
-        $("#trivia-q-and-a").append($("<p>").text(object[0].answer[j]));
+function showQuestion() {
+    $("#trivia-q-and-a").html($("<p>").text(trivia[tIndex].question));
+    for (let j = 0; j < trivia[tIndex].answer.length; j++) {
+        $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].answer[j]));
     }
+}
+
+// unanswered: show right answer, answerTimer(), reset()
+function notAnswered() {
+
+    tIndex++;
 }
 
 // right answer: show "correct!" msg, answerTimer(), reset()
 function rightAnswer() {
 
+    tIndex++;
 }
 
 // wrong answer: show right answer, answerTimer(), reset()
 function wrongAnswer() {
 
+    tIndex++;
 }
 
 // start game
 function startGame() {
-    $("#start-btn").remove();
+    $("#start-btn").hide();
     questionTimer();
-    showQuestion(trivia);
+    showQuestion();
 }
 
 // reset timer and show next question
 function reset() {
 
+}
+
+// show right, wrong and unanswered
+// and show button to play again {try $("#start-btn").hide and .show}
+function endGame() {
+    $("#trivia-q-and-a").html($("<p>").text("Right: " + right));
+    $("#trivia-q-and-a").append($("<p>").text("Wrong: " + wrong));
+    $("#trivia-q-and-a").append($("<p>").text("Unanswered: " + unanswered));
+    $("#start-btn").show();
 }
 
 
@@ -133,6 +154,6 @@ function reset() {
 $( document ).ready(function() {
 
     $("#start-btn").on("click", startGame);
-
+    // endGame();
 
 })
