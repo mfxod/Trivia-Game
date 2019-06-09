@@ -65,8 +65,65 @@ let tIndex = 0;
 
 // ----- FUNCTIONS -----
 
-// Katie's advice to simplify: set one function for timers and pass each timer as a parameter
-// but will this work since I want one timer to .text and the other to be hidden?
+// builds and displays question
+function showQuestion() {
+    $("#trivia-q-and-a").html($("<p>").text(trivia[tIndex].question));
+
+    for (let j = 0; j < trivia[tIndex].answer.length; j++) {
+        $("#trivia-q-and-a").append($("<p>").addClass("answer-choice").text(trivia[tIndex].answer[j]));
+    }
+}
+
+// use the variable clicked as a condition for calling evalAnswer()
+// function isClicked() {
+//     clicked = true;
+//     console.log("Clicked!")
+// }
+
+// unanswered: show right answer, answerTimer(), reset()
+function notAnswered() {
+    $("#trivia-q-and-a").html($("<p>").text("Time's up. The correct answer is:"));
+    $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
+    unanswered++;
+    console.log("Unanswered: " + unanswered);
+    tIndex++;
+    console.log("tIndex: " + tIndex);
+}
+
+// right answer: show "correct!" msg, answerTimer(), reset()
+function rightAnswer() {
+
+    $("#trivia-q-and-a").html($("<p>").text("Right! The correct answer is:"));
+    $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
+    right++;
+    console.log("Right: " + right);
+    tIndex++;
+    console.log("tIndex: " + tIndex);
+}
+
+// wrong answer: show right answer, answerTimer(), reset()
+function wrongAnswer() {
+    $("#trivia-q-and-a").html($("<p>").text("Wrong. The correct answer is:"));
+    $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
+    wrong++;
+    console.log("Wrong: " + wrong);
+    tIndex++;
+    console.log("tIndex: " + tIndex);
+}
+
+function evalAnswer(event) {
+    answerChoice = $(event.target).text();
+
+    if (answerChoice === trivia[tIndex].right) {
+        clearInterval(qInt)
+        rightAnswer();
+        console.log("Right answer!");
+    } else {
+        clearInterval(qInt)
+        wrongAnswer();
+        console.log("Wrong answer.");
+    }
+}
 
 // set a 20 sec. countdown for answering question
 function questionTimer() {
@@ -77,6 +134,7 @@ function qCountDown() {
     qTimer--;
     if (qTimer === 0) {
         clearInterval(qInt)
+        notAnswered();
     } else {
         $("#timer").text(qTimer)
     }
@@ -91,61 +149,7 @@ function aCountDown() {
     aTimer--;
     if (aTimer === 0) {
         clearInterval(aInt)
-    } else {
-        $("#timer").html(aTimer)
     }
-}
-
-// builds and displays question
-function showQuestion() {
-    $("#trivia-q-and-a").html($("<p>").text(trivia[tIndex].question));
-
-    for (let j = 0; j < trivia[tIndex].answer.length; j++) {
-        $("#trivia-q-and-a").append($("<p>").addClass("answer-choice").text(trivia[tIndex].answer[j]));
-    }
-}
-
-function isClicked() {
-    clicked = true;
-}
-
-function evalAnswer(event) {
-    answerChoice = $(event.target).text();
-
-    if (clicked && answerChoice === trivia[tIndex].right) {
-        rightAnswer();
-        console.log("Right!");
-    } else if (clicked && answerChoice !== trivia[tIndex].right) {
-        wrongAnswer();
-        console.log("Wrong.");
-    // this needs to incorporate questionTimer
-    } else {
-        unanswered();
-    }
-}
-
-// unanswered: show right answer, answerTimer(), reset()
-function notAnswered() {
-    $("#trivia-q-and-a").html($("<p>").text("Time's up. The correct answer is:"));
-    $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
-    unanswered++;
-    tIndex++;
-}
-
-// right answer: show "correct!" msg, answerTimer(), reset()
-function rightAnswer() {
-    $("#trivia-q-and-a").html($("<p>").text("Right! The correct answer is:"));
-    $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
-    right++;
-    tIndex++;
-}
-
-// wrong answer: show right answer, answerTimer(), reset()
-function wrongAnswer() {
-    $("#trivia-q-and-a").html($("<p>").text("Wrong. The correct answer is:"));
-    $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
-    wrong++;
-    tIndex++;
 }
 
 // start game
@@ -176,11 +180,9 @@ $(document).ready(function() {
 
     $(document).on("click", "#start-btn", startGame);
 
-    $(document).on("click", ".answer-choice", isClicked);
+    $(document).on("click", ".answer-choice", evalAnswer);
 
-    evalAnswer();
-
-    // $(document).on("click", ".answer-choice", evalAnswer);
+    // evalAnswer();
 
     // endGame();
 
