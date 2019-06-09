@@ -1,16 +1,11 @@
-// start button to begin game sets everything up
-
-// use setInterval to time questions
-
-// use clearInterval to move to next question
-
 // for (let i = 0; i < trivia.length; i++) {
-//  if (answerChoice === trivia[i].right) {
-//      show "correct!" msg and go to next question
-//  } else if (answerChoice !== trivia[i].right) {
-//      show the correct answer and go to next question
+//  if (answerChoice === trivia[tIndex].right) {
+//      show "correct!" msg, right answer, and go to next question
+//  } else if (answerChoice !== trivia[tIndex].right) {
+//      show "wrong" right answer and go to next question
 //  } else {
-//      wait until timer runs out then go to next question
+//      wait until timer runs out
+//      show right answer then go to next question
 //  }
 // }
 
@@ -55,14 +50,15 @@ let wrong = 0;
 let unanswered = 0;
 let question = 0;
 let answerChoice = "";
+let clicked = false;
 
-// these control when the intervals fire
+// variables for timer functions
 let qInt = true;
-let qTimer = 21;
+let qTimer = 20;
 let aInt = true;
 let aTimer = 5;
 
-// use this to move through trivia array when changing questions
+// variable to move through trivia array when changing questions
 let tIndex = 0;
 
 
@@ -72,7 +68,7 @@ let tIndex = 0;
 // Katie's advice to simplify: set one function for timers and pass each timer as a parameter
 // but will this work since I want one timer to .text and the other to be hidden?
 
-// set a 30 sec. countdown for answering question
+// set a 20 sec. countdown for answering question
 function questionTimer() {
     qInt = setInterval(qCountDown, 1000);
 }
@@ -96,33 +92,59 @@ function aCountDown() {
     if (aTimer === 0) {
         clearInterval(aInt)
     } else {
-        $("#timer").text(aTimer)
+        $("#timer").html(aTimer)
     }
 }
 
 // builds and displays question
 function showQuestion() {
     $("#trivia-q-and-a").html($("<p>").text(trivia[tIndex].question));
+
     for (let j = 0; j < trivia[tIndex].answer.length; j++) {
-        $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].answer[j]));
+        $("#trivia-q-and-a").append($("<p>").addClass("answer-choice").text(trivia[tIndex].answer[j]));
+    }
+}
+
+function isClicked() {
+    clicked = true;
+}
+
+function evalAnswer(event) {
+    answerChoice = $(event.target).text();
+
+    if (clicked && answerChoice === trivia[tIndex].right) {
+        rightAnswer();
+        console.log("Right!");
+    } else if (clicked && answerChoice !== trivia[tIndex].right) {
+        wrongAnswer();
+        console.log("Wrong.");
+    // this needs to incorporate questionTimer
+    } else {
+        unanswered();
     }
 }
 
 // unanswered: show right answer, answerTimer(), reset()
 function notAnswered() {
-
+    $("#trivia-q-and-a").html($("<p>").text("Time's up. The correct answer is:"));
+    $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
+    unanswered++;
     tIndex++;
 }
 
 // right answer: show "correct!" msg, answerTimer(), reset()
 function rightAnswer() {
-
+    $("#trivia-q-and-a").html($("<p>").text("Right! The correct answer is:"));
+    $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
+    right++;
     tIndex++;
 }
 
 // wrong answer: show right answer, answerTimer(), reset()
 function wrongAnswer() {
-
+    $("#trivia-q-and-a").html($("<p>").text("Wrong. The correct answer is:"));
+    $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
+    wrong++;
     tIndex++;
 }
 
@@ -139,7 +161,6 @@ function reset() {
 }
 
 // show right, wrong and unanswered
-// and show button to play again {try $("#start-btn").hide and .show}
 function endGame() {
     $("#trivia-q-and-a").html($("<p>").text("Right: " + right));
     $("#trivia-q-and-a").append($("<p>").text("Wrong: " + wrong));
@@ -151,9 +172,16 @@ function endGame() {
 
 // ----- PROCESS -----
 
-$( document ).ready(function() {
+$(document).ready(function() {
 
-    $("#start-btn").on("click", startGame);
+    $(document).on("click", "#start-btn", startGame);
+
+    $(document).on("click", ".answer-choice", isClicked);
+
+    evalAnswer();
+
+    // $(document).on("click", ".answer-choice", evalAnswer);
+
     // endGame();
 
 })
