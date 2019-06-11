@@ -35,7 +35,7 @@ const trivia = [
     },
     {
         question: "What is the name of the computer controlling the ship?",
-        answer: ["Alex", "R2D2", "HAL 9000", "Jethro"],
+        answer: ["Alexa", "R2D2", "HAL 9000", "Jethro"],
         right: "HAL 9000"
     },
     {
@@ -48,15 +48,13 @@ const trivia = [
 let right = 0;
 let wrong = 0;
 let unanswered = 0;
-let question = 0;
 let answerChoice = "";
-let clicked = false;
 
 // variables for timer functions
-let qInt = true;
-let qTimer = 20;
-let aInt = true;
-let aTimer = 5;
+let qInt = false;
+let qTimer = 10;
+let aInt = false;
+let aTimer = 3;
 
 // variable to move through trivia array when changing questions
 let tIndex = 0;
@@ -67,6 +65,7 @@ let tIndex = 0;
 
 // builds and displays question
 function showQuestion() {
+    questionTimer();
     $("#trivia-q-and-a").html($("<p>").text(trivia[tIndex].question));
 
     for (let j = 0; j < trivia[tIndex].answer.length; j++) {
@@ -74,54 +73,42 @@ function showQuestion() {
     }
 }
 
-// use the variable clicked as a condition for calling evalAnswer()
-// function isClicked() {
-//     clicked = true;
-//     console.log("Clicked!")
-// }
-
 // unanswered: show right answer, answerTimer(), reset()
 function notAnswered() {
+    answerTimer();
     $("#trivia-q-and-a").html($("<p>").text("Time's up. The correct answer is:"));
     $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
     unanswered++;
-    console.log("Unanswered: " + unanswered);
     tIndex++;
-    console.log("tIndex: " + tIndex);
 }
 
 // right answer: show "correct!" msg, answerTimer(), reset()
 function rightAnswer() {
-
+    answerTimer();
     $("#trivia-q-and-a").html($("<p>").text("Right! The correct answer is:"));
     $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
     right++;
-    console.log("Right: " + right);
     tIndex++;
-    console.log("tIndex: " + tIndex);
 }
 
 // wrong answer: show right answer, answerTimer(), reset()
 function wrongAnswer() {
+    answerTimer();
     $("#trivia-q-and-a").html($("<p>").text("Wrong. The correct answer is:"));
     $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
     wrong++;
-    console.log("Wrong: " + wrong);
     tIndex++;
-    console.log("tIndex: " + tIndex);
 }
 
 function evalAnswer(event) {
     answerChoice = $(event.target).text();
 
     if (answerChoice === trivia[tIndex].right) {
-        clearInterval(qInt)
+        clearInterval(qInt);
         rightAnswer();
-        console.log("Right answer!");
     } else {
-        clearInterval(qInt)
+        clearInterval(qInt);
         wrongAnswer();
-        console.log("Wrong answer.");
     }
 }
 
@@ -132,11 +119,10 @@ function questionTimer() {
 
 function qCountDown() {
     qTimer--;
+    $("#timer").text(qTimer + " sec.");
     if (qTimer === 0) {
-        clearInterval(qInt)
+        clearInterval(qInt);
         notAnswered();
-    } else {
-        $("#timer").text(qTimer)
     }
 }
 
@@ -148,20 +134,25 @@ function answerTimer() {
 function aCountDown() {
     aTimer--;
     if (aTimer === 0) {
-        clearInterval(aInt)
+        clearInterval(aInt);
+        reset();
+        showQuestion();
     }
 }
 
 // start game
 function startGame() {
     $("#start-btn").hide();
-    questionTimer();
     showQuestion();
 }
 
-// reset timer and show next question
+// reset timer
 function reset() {
-
+    qInt = false;
+    qTimer = 10;
+    aInt = false;
+    aTimer = 3;
+    $("#timer").text("10 sec.");
 }
 
 // show right, wrong and unanswered
@@ -177,13 +168,9 @@ function endGame() {
 // ----- PROCESS -----
 
 $(document).ready(function() {
-
     $(document).on("click", "#start-btn", startGame);
-
     $(document).on("click", ".answer-choice", evalAnswer);
-
-    // evalAnswer();
-
-    // endGame();
-
-})
+    if (tIndex === 5) {
+        endGame();
+    }
+});
