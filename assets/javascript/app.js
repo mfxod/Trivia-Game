@@ -79,7 +79,6 @@ function notAnswered() {
     $("#trivia-q-and-a").html($("<p>").text("Time's up. The correct answer is:"));
     $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
     unanswered++;
-    tIndex++;
 }
 
 // right answer: show "correct!" msg, answerTimer(), reset()
@@ -88,7 +87,6 @@ function rightAnswer() {
     $("#trivia-q-and-a").html($("<p>").text("Right! The correct answer is:"));
     $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
     right++;
-    tIndex++;
 }
 
 // wrong answer: show right answer, answerTimer(), reset()
@@ -97,7 +95,6 @@ function wrongAnswer() {
     $("#trivia-q-and-a").html($("<p>").text("Wrong. The correct answer is:"));
     $("#trivia-q-and-a").append($("<p>").text(trivia[tIndex].right));
     wrong++;
-    tIndex++;
 }
 
 function evalAnswer(event) {
@@ -148,15 +145,20 @@ function startGame() {
 
 // reset timer
 function reset() {
+    clearInterval(qInt);
     qInt = false;
     qTimer = 10;
     aInt = false;
     aTimer = 3;
     $("#timer").text("10 sec.");
+    tIndex++;
+    console.log(tIndex);
 }
 
 // show right, wrong and unanswered
 function endGame() {
+    clearInterval(aInt);
+    clearInterval(qInt);
     $("#trivia-q-and-a").html($("<p>").text("Right: " + right));
     $("#trivia-q-and-a").append($("<p>").text("Wrong: " + wrong));
     $("#trivia-q-and-a").append($("<p>").text("Unanswered: " + unanswered));
@@ -168,9 +170,10 @@ function endGame() {
 // ----- PROCESS -----
 
 $(document).ready(function() {
-    $(document).on("click", "#start-btn", startGame);
-    $(document).on("click", ".answer-choice", evalAnswer);
     if (tIndex === 5) {
         endGame();
+    } else {
+    $(document).on("click", "#start-btn", startGame);
+    $(document).on("click", ".answer-choice", evalAnswer);
     }
 });
