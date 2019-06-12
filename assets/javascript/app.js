@@ -52,7 +52,7 @@ let answerChoice = "";
 
 // variables for timer functions
 let qInt = false;
-let qTimer = 10;
+let qTimer = 15;
 let aInt = false;
 let aTimer = 3;
 
@@ -113,7 +113,7 @@ function evalAnswer(event) {
     }
 }
 
-// set a 20 sec. countdown for answering question
+// set a countdown for answering question
 function questionTimer() {
     qInt = setInterval(qCountDown, 1000);
 }
@@ -127,7 +127,7 @@ function qCountDown() {
     }
 }
 
-// set a 5 sec. countdown for showing the correct answer
+// set a countdown for showing the correct answer
 function answerTimer() {
     qInt = setInterval(aCountDown, 1000);
 }
@@ -152,7 +152,7 @@ function startGame() {
 function reset() {
     clearInterval(qInt);
     qInt = false;
-    qTimer = 10;
+    qTimer = 15;
     aInt = false;
     aTimer = 3;
     $("#timer").text("10 sec.");
