@@ -65,11 +65,15 @@ let tIndex = 0;
 
 // builds and displays question
 function showQuestion() {
-    questionTimer();
-    $("#trivia-q-and-a").html($("<p>").text(trivia[tIndex].question));
+    if (tIndex === 5) {
+        endGame();
+    } else {
+        questionTimer();
+        $("#trivia-q-and-a").html($("<p>").text(trivia[tIndex].question));
 
-    for (let j = 0; j < trivia[tIndex].answer.length; j++) {
-        $("#trivia-q-and-a").append($("<p>").addClass("answer-choice").text(trivia[tIndex].answer[j]));
+        for (let j = 0; j < trivia[tIndex].answer.length; j++) {
+            $("#trivia-q-and-a").append($("<p>").addClass("answer-choice").text(trivia[tIndex].answer[j]));
+        }
     }
 }
 
@@ -139,6 +143,7 @@ function aCountDown() {
 
 // start game
 function startGame() {
+    tIndex = 0;
     $("#start-btn").hide();
     showQuestion();
 }
@@ -170,10 +175,6 @@ function endGame() {
 // ----- PROCESS -----
 
 $(document).ready(function() {
-    if (tIndex === 5) {
-        endGame();
-    } else {
     $(document).on("click", "#start-btn", startGame);
     $(document).on("click", ".answer-choice", evalAnswer);
-    }
 });
