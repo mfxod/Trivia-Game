@@ -7,20 +7,32 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <title>2001: A Trivia Odyssey</title>
+    <link href="https://fonts.googleapis.com/css?family=Poppins:900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Space+Mono&display=swap" rel="stylesheet">
+
 </head>
 <body>
-    
-    <div>
-        <h1>2001: A Trivia Odyssey</h1>
+    <div class="container">
+        <div class="text-center">
+
+            <div class="jumbotron jumbotron-fluid bg-transparent pb-3 text-center">
+                <div class="container">
+                    <h1 class="display-4">2001: a trivia odyssey</h1>
+                </div>
+            </div>
+
+            <div>
+                <p class="timer-text">TIME REMAINING: <span id="timer">10</span></p>
+            </div>
+
+            <div class="pt-5" id="trivia-q-and-a"></div> 
+
+            <div class="pt-5">
+                <button type="button" class="btn btn-primary btn-lg" id="start-btn">Start Game</button>  
+            </div>
+
+        </div>
     </div>
-
-    <div>
-        <p>Time Remaining: <span id="timer">10 sec.</span></p>
-    </div>
-
-    <div id="trivia-q-and-a"></div> 
-
-    <button id="start-btn">Start Game</button>
 
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="assets/javascript/app.js"></script>
