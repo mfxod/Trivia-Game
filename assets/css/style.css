@@ -1,9 +1,44 @@
 * {
     margin: 0;
     padding: 0;
+    color: whitesmoke;
+}
+
+body {
+    background-color: #292929;
+}
+
+.display-4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 3.5rem;
+    color: #ffd700;
+}
+
+.timer-text {
+    font-size: 1.25rem;
+    letter-spacing: .25rem;
+    font-family: 'Space Mono', monospace;
 }
 
 .answer-choice:hover {
+    font-weight: 700;
+    letter-spacing: .125rem;
     text-decoration: underline;
     cursor: pointer;
+}
+
+.btn-primary {
+    color: #ffd700;
+    border-color: #ffd700;
+    background: none;
+}
+
+.btn-primary:hover {
+    border-color: #ffd700;
+    background: #ffd700;
+    color: #292929;
+}
+
+#trivia-q-and-a {
+    font-size: 1.25rem;
 }
