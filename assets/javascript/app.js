@@ -1,19 +1,3 @@
-// for (let i = 0; i < trivia.length; i++) {
-//  if (answerChoice === trivia[tIndex].right) {
-//      show "correct!" msg, right answer, and go to next question
-//  } else if (answerChoice !== trivia[tIndex].right) {
-//      show "wrong" right answer and go to next question
-//  } else {
-//      wait until timer runs out
-//      show right answer then go to next question
-//  }
-// }
-
-// display at end of game:
-// wins, losses and unanswered
-// show button to play again which resets game to new round
-
-
 
 // ----- GLOBAL VARIABLES -----
 
@@ -77,7 +61,7 @@ function showQuestion() {
     }
 }
 
-// unanswered: show right answer, answerTimer(), reset()
+// show right answer, answerTimer()
 function notAnswered() {
     answerTimer();
     $("#trivia-q-and-a").html($("<p>").text("Time's up. The correct answer is:"));
@@ -85,7 +69,7 @@ function notAnswered() {
     unanswered++;
 }
 
-// right answer: show "correct!" msg, answerTimer(), reset()
+// show "correct!" msg, answerTimer()
 function rightAnswer() {
     answerTimer();
     $("#trivia-q-and-a").html($("<p>").text("Right! The correct answer is:"));
@@ -93,7 +77,7 @@ function rightAnswer() {
     right++;
 }
 
-// wrong answer: show right answer, answerTimer(), reset()
+// show right answer, answerTimer()
 function wrongAnswer() {
     answerTimer();
     $("#trivia-q-and-a").html($("<p>").text("Wrong. The correct answer is:"));
@@ -141,7 +125,7 @@ function aCountDown() {
     }
 }
 
-// start game
+// start game with button click
 function startGame() {
     tIndex = 0;
     $("#start-btn").hide();
@@ -157,17 +141,16 @@ function reset() {
     aTimer = 3;
     $("#timer").text("10 sec.");
     tIndex++;
-    console.log(tIndex);
 }
 
-// show right, wrong and unanswered
+// show right, wrong and unanswered, and show button to play again
 function endGame() {
     clearInterval(aInt);
     clearInterval(qInt);
     $("#trivia-q-and-a").html($("<p>").text("Right: " + right));
     $("#trivia-q-and-a").append($("<p>").text("Wrong: " + wrong));
     $("#trivia-q-and-a").append($("<p>").text("Unanswered: " + unanswered));
-    $("#start-btn").show();
+    $("#start-btn").show().text("Try again?");
 }
 
 
