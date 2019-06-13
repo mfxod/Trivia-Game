@@ -104,7 +104,7 @@ function questionTimer() {
 
 function qCountDown() {
     qTimer--;
-    $("#timer").text(qTimer + " sec.");
+    $("#timer").text(qTimer);
     if (qTimer === 0) {
         clearInterval(qInt);
         notAnswered();
@@ -139,7 +139,7 @@ function reset() {
     qTimer = 15;
     aInt = false;
     aTimer = 3;
-    $("#timer").text("10 sec.");
+    $("#timer").text("15");
     tIndex++;
 }
 
